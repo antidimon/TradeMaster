@@ -1,0 +1,46 @@
+INSERT INTO stocks (name, price, stocks_per_lot) VALUES ('', , );
+SELECT bs.* FROM briefcase_stocks bs INNER JOIN stocks s ON bs.stock_id = s.id WHERE s.name = '';
+SELECT deposited_balance, balance_now, free_balance, total_revenue FROM briefcases;
+
+SELECT * FROM briefcase_stocks WHERE id = 1;
+INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_name, stocks_amount, stock_price)
+    VALUES (1, 1, 1, 1, 'A', 10, 101);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SELECT * FROM briefcase_stocks WHERE briefcase_id = 1;
+
+SELECT * FROM briefcases WHERE id= 1;
+
+
+INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price)
+VALUES (1, 1, 1, 1, 18, 100, 101);
+
+UPDATE operations SET status_id = 4 WHERE id=9;
+
+
+
+INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price)
+VALUES (1, 1, 1, 2, 18, 50, 101);
+
+UPDATE operations SET status_id = 4 WHERE id=8;
+
+
+
+INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price)
+VALUES (1, 1, 1, 1, 18, 500, 101);
+
+SELECT * FROM operations WHERE id=8;

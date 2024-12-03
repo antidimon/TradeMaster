@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница входа</title>
+    <link rel="stylesheet" type="text/css" href="/styles/login.css">
+</head>
+<body>
+<form action="/login" method="post">
+    <h1>Вход в систему</h1>
+    <br/>
+    <div th:if="${error}">
+        <span style="color:red">Неверный номер телефона или пароль</span>
+    </div>
+    <label for="phoneNumber">Номер телефона:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" required>
+
+    <label for="password">Пароль:</label>
+    <input type="password" id="password" name="password" required>
+
+    <a href="/register">Зарегистрироваться</a>
+
+    <button type="submit">Войти</button>
+</form>
+</body>
+</html>

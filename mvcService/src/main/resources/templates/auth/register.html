@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 7px;
+            background-color: rgb(49, 59, 213);
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+<form th:method="POST" th:action="@{/register}" th:object="${user}">
+    <h2>Регистрация</h2>
+    <label for="fio">Введите ФИО: </label>
+    <input type="text" th:field="*{fio}" id="fio">
+    <div style="color:red" th:if="${#fields.hasErrors('fio')}" th:errors="*{fio}">FIO Error</div>
+
+    <label for="age">Введите возраст: </label>
+    <input type="text" th:field="*{age}" id="age">
+    <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
+
+    <label for="passportDetails">Введите паспортные данные: </label>
+    <input type="text" th:field="*{passportDetails}" id="passportDetails">
+    <div style="color:red" th:if="${#fields.hasErrors('passportDetails')}" th:errors="*{passportDetails}">Passport Error</div>
+
+    <label for="phoneNumber">Введите телефон: </label>
+    <input type="text" value="8**********" th:field="*{phoneNumber}" id="phoneNumber">
+    <div style="color:red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Phone Error</div>
+
+    <label for="email">Введите email: </label>
+    <input type="text" th:field="*{email}" id="email">
+    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+
+    <label for="password">Enter password: </label>
+    <input type="password" th:field="*{password}" id="password">
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+
+    <a href="/login">Вход</a>
+
+    <button type="submit">Зарегистрироваться</button>
+</form>
+</body>
+
+</html>

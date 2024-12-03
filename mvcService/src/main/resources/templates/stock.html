@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инвестиции - TradeMaster</title>
+    <link rel="stylesheet" href="/styles/stock.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment-timezone/builds/moment-timezone-with-data.min.js"></script>
+</head>
+<body>
+<header>
+    <a href="/" class="main-page">TradeMaster</a>
+    <h2 class="portfolio-title">Новости</h2>
+    <form action="/logout" method="POST" class="logout-form">
+        <button type="submit" class="logout-button">Выход</button>
+    </form>
+</header>
+<div class="container">
+    <div class="stock-info">
+        <form action="/stocks/search" method="post" class="portfolio-button-form">
+            <button class="portfolio-button">Найти акцию</button>
+        </form>
+        <div class="stock-header">
+            <img th:src="${stock.getUrl()}" alt="Иконка акции" class="stock-icon">
+            <h2 th:text="${stock.getName()}">Название акции</h2>
+        </div>
+        <div class="stock-details">
+            <div class="stock-chart">
+                <canvas id="stockChart"></canvas>
+            </div>
+            <div class="stock-price">
+                <h3>Цена сейчас: <span th:text="${stock.getPrice()}">500</span><span>₽</span></h3>
+                <h3>Прогнозная цена: <span th:text="${stock.getPredictedPrice()}">500</span><span>₽</span></h3>
+            </div>
+        </div>
+
+        <script th:inline="javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                var pricesData = /*[[${prices}]]*/;
+                const chartData = pricesData.map(item => {
+                    const date = moment.tz(item.dateTime, 'Europe/Moscow').toDate(); // Преобразуем в Date
+                    return {
+                        x: date, // Убедитесь, что это объект Date
+                        y: item.price
+                    };
+                });
+
+                const canvas = document.getElementById('stockChart');
+                const ctx = canvas.getContext('2d');
+
+                const minInterval = moment.duration(moment
+                    .max(chartData.map(item => moment(item.x)))
+                    .diff(moment.min(chartData.map(item => moment(item.x))))).asMinutes();
+
+                // Выбираем единицу измерения для оси X
+                let timeUnit = 'hour';
+                let displayFormat = 'HH:mm';
+                if (minInterval >= 1440) { // Более 24 часов
+                    timeUnit = 'day';
+                    displayFormat = 'MMM DD';
+                } else if (minInterval >= 60) { // Более 1 часа
+                    timeUnit = 'hour';
+                    displayFormat = 'HH:mm';
+                } else { // Менее 1 часа
+                    timeUnit = 'minute';
+                    displayFormat = 'HH:mm:ss';
+                }
+
+                const minPrice = Math.min(...chartData.map(item => item.y));
+                const maxPrice = Math.max(...chartData.map(item => item.y));
+                const priceRange = maxPrice - minPrice;
+                // Создаем график
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: 'Цена акции',
+                            data: chartData,
+                            borderColor: 'rgba(255, 159, 64, 1)',
+                            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: timeUnit, // Выбранная единица
+                                    parser: 'YYYY-MM-DD HH:mm:ss',
+                                    displayFormats: {
+                                        hour: displayFormat // Соответствующий формат
+                                    }
+                                },
+                                grid: {
+                                    color: 'white'
+                                },
+                                ticks: {
+                                    color: 'white'
+                                }
+                            },
+                            y: {
+                                beginAtZero: false,
+                                min: minPrice - priceRange * 0.1, // Устанавливаем минимальное значение Y с учетом 10% от диапазона
+                                max: maxPrice + priceRange * 0.1, // Устанавливаем максимальное значение Y с учетом 10% от диапазона
+                                grid: {
+                                    color: 'white'
+                                },
+                                ticks: {
+                                    color: 'white' // Черный цвет меток
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white' // Белый цвет текста легенды
+                                }
+                            }
+                        },
+                        backgroundColor: 'white'
+                    }
+                });
+            });
+        </script>
+        <div class="stock-portfolio" th:each="briefcaseStock :${briefcaseStocks}">
+            <h3 th:text="${'В портфеле <' + briefcaseStock.getBriefcaseName() +'>:'}"></h3>
+            <p><strong>Количество: </strong><span th:text="${briefcaseStock.getStocksAmount()}">10</span></p>
+            <p><strong>Цена покупки: </strong><span th:text="${briefcaseStock.getStock().getPrice()}">450</span>₽</p>
+            <p><strong>Выручка: </strong><span th:text="${briefcaseStock.getRevenue()}">5000</span>₽</p>
+        </div>
+        <div class="stock-actions">
+            <form action="/stocks/buy" method="POST" class="buy-form">
+                <label for="portfolioBuy">Выберите портфель:</label>
+                <select name="briefcaseName" id="portfolioBuy" required>
+                    <option value="" disabled selected>Выберите портфель</option>
+                    <option th:each="briefcase : ${briefcases}"
+                            th:value="${briefcase.getBriefcaseName()}"
+                            th:text="${briefcase.getBriefcaseName()}"></option>
+                </select>
+                <div id="balanceDisplay" style="margin-top: 10px; font-weight: bold; color: white;"></div>
+                <label for="numberBuy">Выберите количество:</label>
+                <input id="numberBuy" type="number" name="amount" placeholder="Количество" required>
+                <input type="hidden" name="stockName" th:value="${stock.getName()}" />
+                <button type="submit">Купить</button>
+            </form>
+            <script th:inline="javascript">
+                document.addEventListener('DOMContentLoaded', function() {
+                    var briefcases = /*[[${briefcases}]]*/;
+                    const briefcasesMap = briefcases.map(briefcase => {
+                        return {
+                            name: briefcase.briefcaseName,
+                            balance: briefcase.freeBalance
+                        };
+                    });
+
+                    const portfolioSelect = document.getElementById('portfolioBuy');
+                    const balanceDisplay = document.getElementById('balanceDisplay');
+
+                    console.log(briefcasesMap);
+                    portfolioSelect.addEventListener('change', function() {
+                        const selectedBriefcaseName = portfolioSelect.value;
+
+                        // Найдите выбранный портфель по имени
+                        const selectedBriefcase = briefcasesMap.find(briefcase => briefcase.name === selectedBriefcaseName);
+
+                        if (selectedBriefcase) {
+                            const balance = selectedBriefcase.balance; // Получите баланс
+                            balanceDisplay.textContent = 'Баланс: ' + balance; // Отобразите баланс, используйте обратные кавычки
+                        } else {
+                            balanceDisplay.textContent = ''; // Очистите текст, если ничего не выбрано
+                        }
+                    });
+
+                });
+            </script>
+            <form action="/stocks/sell" method="POST" class="sell-form">
+                <label for="portfolioSell">Выберите портфель:</label>
+                <select name="briefcaseName" id="portfolioSell" required>
+                    <option value="" disabled selected>Выберите портфель</option>
+                    <option th:each="briefcase : ${briefcases}"
+                            th:value="${briefcase.getBriefcaseName()}"
+                            th:text="${briefcase.getBriefcaseName()}"></option>
+                </select>
+                <div id="stocksDisplay" style="margin-top: 10px; font-weight: bold; color: white;"></div>
+                <label for="numberSell">Выберите количество:</label>
+                <input id="numberSell" type="number" name="amount" placeholder="Количество" required>
+                <input type="hidden" name="stockName" th:value="${stock.getName()}" />
+                <button type="submit">Продать</button>
+            </form>
+            <script th:inline="javascript">
+                const briefcases = /*[[${briefcases}]]*/;
+
+                const portfolioSelect = document.getElementById('portfolioSell');
+                const stocksDisplay = document.getElementById('stocksDisplay');
+                const stockName = /*[[${stock.getName()}]]*/; // Получаем имя акции из Thymeleaf
+
+                portfolioSelect.addEventListener('change', function() {
+                    const selectedBriefcaseName = portfolioSelect.value;
+
+                    // Найдите выбранный портфель по имени
+                    const selectedBriefcase = briefcases.find(briefcase => briefcase.briefcaseName === selectedBriefcaseName);
+
+                    if (selectedBriefcase) {
+                        // Находим все акции с нужным именем и суммируем их количество
+                        const totalStocks = selectedBriefcase.stocks
+                            .filter(briefcaseStock => briefcaseStock.stock.name === stockName)
+                            .reduce((sum, briefcaseStock) => sum + briefcaseStock.stocksAmount, 0);
+
+                        stocksDisplay.textContent = 'Количество акций ' + stockName + ': ' + totalStocks;
+                    } else {
+                        stocksDisplay.textContent = ''; // Очистите текст, если ничего не выбрано
+                    }
+                });
+            </script>
+        </div>
+    </div>
+</div>
+</body>
+</html>

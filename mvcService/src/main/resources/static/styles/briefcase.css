@@ -1,0 +1,259 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #353A40; /* Нежно-серый фон */
+}
+
+header {
+    display: flex;
+    position: sticky;
+    top: 0;
+    justify-content: space-between; /* Распределяем пространство между элементами */
+    align-items: center; /* Центрируем элементы по вертикали */
+    background-color: #747e81;
+    padding: 20px;
+    color: white;
+}
+
+.main-page {
+    text-decoration: none;
+    margin: 0;
+    font-size: 2em;
+    cursor: pointer;
+    background-image: url(/images/flame.gif);
+    background-size: cover;
+    background-position: center;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+h2 {
+    text-align: center; /* Центрируем заголовок h2 */
+    flex-grow: 1; /* Позволяет заголовку h2 занимать доступное пространство */
+    color: white;
+}
+
+label {
+    color: white;
+}
+
+strong {
+    color: white;
+}
+
+span {
+    color: white;
+}
+
+.logout-button {
+    background-color: rgb(49, 59, 213);
+    border: 4px solid #CD873C;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 50px;
+    font-size: 1.2em;
+}
+
+.logout-button:hover {
+    background-color: #1821ba;
+}
+
+.container {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение элементов */
+    align-items: center; /* Центрируем содержимое */
+    padding: 20px;
+}
+
+.name-placeholder {
+    width: 100%; /* Занимает всю ширину родительского элемента */
+    padding: 12px; /* Внутренние отступы */
+    margin-top: 10px; /* Отступ сверху */
+    margin-bottom: 20px; /* Отступ снизу */
+    border: 1px solid #ccc; /* Светлая рамка */
+    border-radius: 8px; /* Скругление углов */
+    font-size: 1.2em; /* Увеличенный шрифт */
+    font-family: 'Roboto', sans-serif; /* Шрифт для текстового поля */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Тень для глубины */
+    transition: border-color 0.3s, box-shadow 0.3s; /* Плавный переход для изменения стилей */
+}
+
+/* Эффект при фокусировке на поле ввода */
+.name-placeholder:focus {
+    border-color: rgb(49, 59, 213); /* Цвет рамки при фокусировке */
+    box-shadow: 0 0 5px rgba(237, 121, 5, 0.92); /* Тень при фокусировке */
+    outline: none; /* Убираем стандартный контур при фокусировке */
+}
+
+/* Плейсхолдер (текст подсказки) */
+.name-placeholder::placeholder {
+    color: #aaa; /* Цвет плейсхолдера */
+    font-style: italic; /* Курсив для плейсхолдера */
+}
+
+.portfolio-button-container {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение элементов */
+    align-items: center; /* Центрируем содержимое */
+    margin-bottom: 20px; /* Отступ между контейнерами */
+    padding: 15px;
+    border: 1px solid #ccc;
+    background-color: #747e81;
+    border-radius: 10px;
+    width: 500px; /* Ширина контейнера */
+
+    box-shadow: 0 0 5px 5px rgba(237, 121, 5, 0.92);
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px; /* Отступ между полем ввода и кнопками */
+}
+
+.action-button {
+    background-color: transparent; /* Прозрачный фон для кнопок */
+    border: none; /* Убираем рамку */
+    cursor: pointer; /* Курсор при наведении */
+    margin: 0 20px; /* Отступы между кнопками */
+    text-decoration: none;
+}
+
+.action-button img {
+    width: 100px; /* Размер иконок */
+    height: 80px; /* Размер иконок */
+    border-radius: 65%;
+}
+
+.error-span {
+    color: red;
+}
+
+.portfolio-wrapper {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение элементов */
+    align-items: center; /* Центрируем содержимое */
+    background-color: #747e81; /* Белый фон для блока операций */
+    border-radius: 10px; /* Скругление углов блока операций */
+    padding: 15px; /* Отступ внутри блока операций */
+    width: 600px; /* Ширина блока операций */
+
+    box-shadow: 0 0 5px 5px rgba(237, 121, 5, 0.92);
+}
+
+.operation-list {
+    display: flex;
+    justify-content: center; /* Центрируем элементы по горизонтали */
+    flex-wrap: wrap; /* Позволяет элементам переноситься на новую строку при недостатке места */
+    background-color: #747e81; /* Белый фон для блока операций */
+    border-radius: 10px;
+    width: 600px;
+    margin-top: 15px; /* Отступ между заголовком и списком операций */
+
+    box-shadow: 0 0 5px 5px rgba(237, 121, 5, 0.92);
+}
+
+.operation-item {
+    text-align: center;
+    margin: 10px; /* Добавляем отступы между элементами */
+    flex: 1 1 150px; /* Позволяем элементам растягиваться и сжиматься, минимальная ширина - 150px */
+}
+
+/* Добавляем правило для ограничения ширины текста операций */
+.operation-item p {
+    font-size: 20px;
+}
+
+
+
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed; /* Остается на месте */
+    z-index: 1; /* На переднем плане */
+    left: 0;
+    top: 0;
+    width: 100%; /* Полная ширина */
+    height: 100%; /* Полная высота */
+    overflow: auto; /* Включает прокрутку, если необходимо */
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+}
+
+/* Содержимое модального окна */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% сверху и центрирование */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 300px; /* Ширина модального окна */
+    border-radius: 8px; /* Закругленные углы */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень */
+}
+
+/* Заголовок модального окна */
+.modal-content h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333; /* Цвет текста заголовка */
+}
+
+/* Кнопка закрытия */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Поле ввода суммы */
+#amountInput {
+    width: calc(100% - 20px); /* Полная ширина с учетом отступов */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* Закругленные углы поля ввода */
+}
+
+/* Кнопка выполнения */
+#executeButton {
+    background-color: #4CAF50; /* Зеленый фон */
+    color: white; /* Белый текст */
+    padding: 10px;
+    border: none;
+    border-radius: 4px; /* Закругленные углы кнопки */
+    cursor: pointer;
+    width: 100%; /* Полная ширина кнопки */
+}
+
+#executeButton:hover {
+    background-color: #45a049; /* Темнее при наведении */
+}
+
+
+
+.briefcase-info {
+    margin: 15px 0;
+}
+
+.briefcase-info span {
+    color: white;
+    font-size: 18px;
+}
+
+.briefcase-info strong {
+    color: white;
+    font-size: 20px;
+}

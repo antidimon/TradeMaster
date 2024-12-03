@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Инвестиции - TradeMaster</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div>
+        <h1>TradeMaster</h1>
+        <form action="/logout" method="POST" class="logout-form">
+            <button type="submit" class="logout-button">Выход</button>
+        </form>
+    </div>
+</header>
+
+<div class="container">
+    <div class="portfolio-button-container">
+        <form action="/news" method="get" class="portfolio-button-form">
+            <button class="portfolio-button">Новости</button>
+        </form>
+        <form action="/stocks/search" method="post" class="portfolio-button-form">
+            <button class="portfolio-button">Найти акцию</button>
+        </form>
+    </div>
+    <div class="portfolio-wrapper">
+        <div class="portfolio" th:each="briefcase: ${briefcases}">
+            <form action="/briefcases" method="get">
+                <input type="hidden" name="name" th:value="${briefcase.getBriefcaseName()}">
+                <button type="submit" th:text="${briefcase.getBriefcaseName()}" class="briefcase-form-button">Портфель</button>
+            </form>
+            <div class="portfolio-summary">
+                <p><strong>Общий баланс: </strong><span th:text="${briefcase.getBalanceNow()}">100,000</span><span>₽</span></p>
+                <p><strong>Выручка за всё время: </strong><span th:text="${briefcase.getTotalRevenue()}">10,000</span><span>₽</span></p>
+            </div>
+            <div class="stock-summary">
+                <div class="stock-item">
+                    <div class="stock-icon">
+                        <img src="/images/Rubles.jpg" alt="Stock Icon" class="stock-image" />
+                    </div>
+                    <div class="stock-details">
+                        <p><span>Рубли</span></p>
+                        <p><strong>Всего: </strong><span th:text="${briefcase.getFreeBalance()}">50,000</span><span>₽</span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="stock-item" th:each="stock: ${briefcase.getStocks()}">
+                <form action="/stocks" method="GET" class="stock-icon-form">
+                    <input type="hidden" name="name" th:value="${stock.getStock().getName()}" />
+                    <button type="submit" class="stock-icon-button">
+                        <img th:src="${stock.getStock().getUrl()}" alt="Stock Icon" class="stock-image" />
+                    </button>
+                </form>
+
+
+                <div class="stock-details">
+                    <p><strong>Акция </strong><span th:text="${stock.getStock().getName()}">A</span></p>
+                    <p><strong>Цена: </strong><span th:text="${stock.getStockActualPrice()}">500</span><span>₽</span></p>
+                    <p><strong>Количество: </strong><span th:text="${stock.getStocksAmount()}">10</span></p>
+                    <p><strong>Выручка: </strong><span th:text="${stock.getRevenue()}">5000</span><span>₽</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-menu">
+        <div class="profile-icon">
+            <img src="/images/profile.png" alt="Profile Icon" />
+        </div>
+        <div class="profile-details">
+            <p><span th:text="${user.getFio()}">Имя</span></p>
+            <p><strong>Возраст:</strong> <span th:text="${user.getAge()}">30</span></p>
+
+            <p><strong>Email:</strong>
+                <span th:if="${unhide}" th:text="${user.getEmail()}">Email</span>
+                <span th:unless="${unhide}">*****@*****</span>
+            </p>
+
+            <p><strong>Телефон:</strong>
+                <span th:if="${unhide}" th:text="${user.getPhoneNumber()}">Phone</span>
+                <span th:unless="${unhide}">8**********</span>
+            </p>
+
+            <p><strong>Паспортные данные:</strong>
+                <span th:if="${unhide}" th:text="${user.getPassportDetails()}">Passport</span>
+                <span th:unless="${unhide}">********* pass</span>
+            </p>
+
+            <form th:if="${unhide}" action="/" method="get">
+                <button class="profile-button">Скрыть данные</button>
+            </form>
+            <form th:unless="${unhide}" action="/" method="get">
+                <input type="hidden" name="unhide" value="true">
+                <button class="profile-button">Показать данные</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

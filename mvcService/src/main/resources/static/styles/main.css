@@ -1,0 +1,278 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #353A40;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #747e81;
+    padding: 20px;
+    color: white;
+}
+
+h1 {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    margin: 0;
+    font-size: 2.2em;
+
+    background-image: url(/images/flame.gif);
+    background-size: cover;
+    background-position: center;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.logout-form{
+    display: flex;
+    transform: translateX(+1800%);
+}
+
+.logout-button {
+    background-color: rgb(49, 59, 213);
+    border: 4px solid #CD873C;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 50px;
+    font-size: 1.2em;
+}
+
+.logout-button:hover{
+    background-color: #1821ba;
+}
+
+.container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    width: 100%;
+}
+
+.portfolio-button-container {
+    display: flex;
+    position: sticky;
+    top: 115px;
+    flex-direction: column;
+    align-items: center; /* Центрирование по горизонтали */
+    justify-content: center; /* Центрирование по вертикали, если нужно */
+    margin: 0 auto; /* Центрирование контейнера по горизонтали */
+    padding: 15px;
+    background-color: #747e81;
+    border-radius: 10px;
+    width: 25%; /* Ширина контейнера */
+    box-shadow: 0 0 6px 6px rgba(237, 121, 5, 0.92);
+}
+
+.portfolio-button-form {
+    display: flex; /* Используем flexbox для выравнивания */
+    flex-direction: column; /* Располагаем элементы в колонку */
+    align-items: center; /* Центрируем элементы по горизонтали */
+    width: 100%; /* Ширина формы занимает 100% контейнера */
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.portfolio-button {
+    background-color: rgb(49, 59, 213);
+    color: white;
+    padding: 10px; /* Уменьшение внутреннего отступа */
+    border: 4px solid #CD873C;
+    border-radius: 999px; /* Округлые края */
+    cursor: pointer;
+    font-size: 1.2em; /* Размер шрифта */
+    transition: background-color 0.3s;
+    width: 80%; /* Установка ширины кнопки на 80% контейнера */
+    max-width: 300px; /* Максимальная ширина кнопки */
+    margin: 5px 0; /* Отступы между кнопками */
+}
+
+
+
+.portfolio-button:hover {
+    background-color: #1821ba;
+}
+
+.portfolio-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+}
+
+.portfolio {
+    width: 100%;
+    max-width: 600px;
+    margin: 15px 0;
+    background-color: #747e81;
+    border: 1px solid #CD873C;
+    border-radius: 10px;
+    box-shadow: 0 0 6px 6px rgba(237, 121, 5, 0.92);
+    padding: 20px;
+}
+
+.briefcase-form-button {
+    background: none;
+    border: none;
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+}
+
+.briefcase-form-button:hover {
+    color: #5050f8;
+}
+
+.portfolio-summary {
+    margin: 15px 0;
+}
+
+.portfolio-summary span {
+    color: white;
+    font-size: 18px;
+}
+
+.portfolio-summary strong {
+    color: white;
+    font-size: 20px;
+}
+
+.stock-summary {
+    margin: 10px 0;
+    background-color: #6d7b7c;
+    border-radius: 8px;
+}
+
+.stock-item {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #444949;
+    border-radius: 8px;
+}
+
+.stock-icon-form {
+    display: inline-block;
+}
+
+.stock-icon-button {
+    display: flex;
+    align-items: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.stock-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%; /* Полностью круглая форма */
+    object-fit: cover;
+    transition: all 0.5s ease-in-out; /* Добавляем переход для плавности */
+}
+
+.stock-image:hover {
+    border-radius: 10%; /* Почти квадратная форма при наведении */
+}
+
+
+.stock-details {
+    margin-left: 10px;
+    flex-grow: 1;
+}
+
+.stock-details strong {
+    color: white;
+}
+
+.stock-details span {
+    color: white;
+}
+
+.profile-menu {
+    position: sticky;
+    top: 115px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    padding: 15px;
+    border: 1px solid #CD873C;
+    background-color: #747e81;
+    border-radius: 10px;
+    width: 25%;
+
+    box-shadow: 0 0 5px 5px rgba(237, 121, 5, 0.92);
+}
+
+.profile-icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 5%;
+    background-color: #454e50;
+    margin-bottom: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.profile-details {
+    text-align: center;
+}
+
+.profile-details p {
+    font-size: 1.2em;
+}
+
+.profile-details span {
+    color: white;
+    font-size: 22px;
+}
+
+.profile-details strong {
+    color: white;
+    font-size: 25px;
+}
+
+.profile-button {
+    background-color: rgb(49, 59, 213);
+    border: 4px solid #CD873C;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 999px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.profile-button:hover {
+    background-color: #1821ba;
+}
+

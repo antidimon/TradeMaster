@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: ${DB_LOCAL_URL}
+
+server:
+  port: ${SERVER_PORT}
+  servlet:
+    context-path: /
+
+REST_URL: http://localhost:${REST_SERVICE_PORT}

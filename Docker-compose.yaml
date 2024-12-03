@@ -1,0 +1,88 @@
+services:
+  rest-service:
+    env_file:
+      - .env
+    container_name: rest-service
+    image: rest-service:0.0.1
+    build:
+      context: ./restService
+      dockerfile: Dockerfile
+    ports:
+      - "${REST_PORT}:${REST_PORT}"
+    depends_on:
+      rest-db:
+        condition: service_healthy
+
+  rest-db:
+    env_file:
+      - .env
+    container_name: service-rest-db
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${REST_DB_PORT}:5432"
+    volumes:
+      - ./restService/.docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db-data:/var/lib/postgresql/rest-data
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-p", "5432", "-d", "${REST_DB_NAME}", "-U", "${DB_USERNAME}" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+
+
+
+  mvc-service:
+    env_file:
+      - .env
+    container_name: mvc-service
+    image: mvc-service:0.0.1
+    build:
+      context: ./mvcService
+      dockerfile: Dockerfile
+    ports:
+      - "${MVC_PORT}:${MVC_PORT}"
+    depends_on:
+      mvc-db:
+        condition: service_healthy
+
+  mvc-db:
+    env_file:
+      - .env
+    container_name: service-mvc-db
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${MVC_DB_PORT}:5432"
+    volumes:
+      - ./mvcService/.docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db-data:/var/lib/postgresql/mvc-data
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-p", "5432", "-d", "${MVC_DB_NAME}", "-U", "${DB_USERNAME}" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+
+
+  scheduler:
+    env_file:
+      - .env
+    container_name: scheduler
+    image: scheduler:0.0.1
+    build:
+      context: ./stocksAdder
+      dockerfile: Dockerfile
+    ports:
+      - "${SCHEDULE_PORT}:${SCHEDULE_PORT}"
+
+
+
+volumes:
+  db-data:

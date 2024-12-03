@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: ${DB_DOCKER_URL}
+
+server:
+  port: ${DOCKER_SERVER_PORT}

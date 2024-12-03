@@ -1,0 +1,93 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #353A40; /* Нежно-серый фон */
+}
+
+header {
+    display: flex;
+    position: sticky;
+    top: 0;
+    justify-content: space-between; /* Распределяем пространство между элементами */
+    align-items: center; /* Центрируем элементы по вертикали */
+    background-color: #747e81;
+    padding: 20px;
+    color: white;
+}
+
+.main-page {
+    text-decoration: none;
+    margin: 0;
+    font-size: 2em;
+    cursor: pointer;
+    background-image: url(/images/flame.gif);
+    background-size: cover;
+    background-position: center;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+h2 {
+    text-align: center; /* Центрируем заголовок h2 */
+    flex-grow: 1; /* Позволяет заголовку h2 занимать доступное пространство */
+    color: white;
+}
+
+.logout-button {
+    background-color: rgb(49, 59, 213);
+    border: 4px solid #CD873C;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 50px;
+    font-size: 1.2em;
+}
+
+.logout-button:hover {
+    background-color: #1821ba;
+}
+
+
+.container {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение элементов */
+    align-items: center; /* Центрируем содержимое */
+    padding: 20px;
+}
+
+.news-wrapper {
+    display: flex;
+    flex-direction: column; /* Вертикальное расположение элементов */
+    align-items: center; /* Центрируем содержимое */
+    background-color: #747e81; /* Белый фон для блока операций */
+    border-radius: 10px; /* Скругление углов блока операций */
+    padding: 15px; /* Отступ внутри блока операций */
+    width: 600px; /* Ширина блока операций */
+}
+
+.news-list {
+    display: flex;
+    justify-content: center; /* Центрируем элементы по горизонтали */
+    flex-wrap: wrap; /* Позволяет элементам переноситься на новую строку при недостатке места */
+    background-color: #747e81; /* Белый фон для блока операций */
+    border-radius: 10px;
+    width: 600px;
+    margin-top: 15px; /* Отступ между заголовком и списком операций */
+}
+
+.news-list-item {
+    text-align: center;
+    margin: 10px; /* Добавляем отступы между элементами */
+    flex: 1 1 150px; /* Позволяем элементам растягиваться и сжиматься, минимальная ширина - 150px */
+}
+
+.news-list-item p {
+    font-size: 1.3em;
+    color: white;
+}

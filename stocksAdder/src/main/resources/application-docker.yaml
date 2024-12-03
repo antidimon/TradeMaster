@@ -1,0 +1,3 @@
+REST_URL: http://rest-service:${DOCKER_REST_SERVICE_PORT}
+server:
+  port: ${DOCKER_SERVER_PORT}

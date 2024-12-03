@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: ${DB_DOCKER_URL}
+
+
+REST_URL: http://rest-service:${REST_SERVICE_PORT}

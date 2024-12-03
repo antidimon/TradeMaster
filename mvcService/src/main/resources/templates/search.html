@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/search.css">
+    <title>Поиск акций</title>
+</head>
+<body>
+<header>
+    <a href="/" class="main-page">TradeMaster</a>
+    <h2>Поиск акций</h2>
+    <form action="/logout" method="POST">
+        <button type="submit" class="logout-button">Выход</button>
+    </form>
+</header>
+
+<div class="container">
+    <div class="portfolio-wrapper">
+        <form class="portfolio-button-form" action="/stocks/search" method="post">
+            <input id="query" name="query" type="text" placeholder="Введите название акции" class="portfolio-input" />
+            <button type="submit" class="portfolio-button">Найти</button>
+        </form>
+        <div class="results">
+            <div class="stock-item" th:each="stock :${stocks}">
+                <form action="/stocks" method="GET" class="stock-icon-form">
+                    <input type="hidden" name="name" th:value="${stock.getName()}">
+                    <button class="stock-icon-button">
+                        <img th:src="${stock.getUrl()}" alt="Иконка акции" class="stock-image" />
+                    </button>
+                </form>
+                <div class="stock-details">
+                    <p><strong>Акция </strong><span th:text="${stock.getName()}">A</span></p>
+                    <p><strong>Цена: </strong><span th:text="${stock.getPrice()}">500</span><span>₽</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

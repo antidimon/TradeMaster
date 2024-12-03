@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр Портфеля</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/briefcase.css">
+</head>
+<body>
+<header>
+    <a href="/" class="main-page">TradeMaster</a>
+    <h2 th:text="${briefcase.getBriefcaseName()}" class="portfolio-title">Портфель</h2>
+    <form action="/logout" method="POST">
+        <button type="submit" class="logout-button">Выход</button>
+    </form>
+</header>
+
+<div class="container">
+    <div class="portfolio-button-container">
+        <form action="/briefcases/save" method="post">
+            <label for="portfolio-name">Название портфеля: </label>
+            <input type="hidden" name="name" th:value="${briefcase.getBriefcaseName()}" />
+            <input type="text" id="portfolio-name" class="name-placeholder" name="newName" placeholder="Название портфеля" th:value="${briefcase.getBriefcaseName()}"/>
+            <span th:if="${nameError}" class="error-span">Ошибка названия</span>
+
+            <div class="briefcase-info">
+                <p><strong>Общий баланс: </strong><span th:text="${briefcase.getBalanceNow()}">1</span><span>₽</span></p>
+                <p><strong>Баланс в рублях: </strong><span th:text="${briefcase.getFreeBalance()}">1</span><span>₽</span></p>
+            </div>
+            <div class="action-buttons">
+                <button class="action-button save-button" type="submit">
+                    <img src="/images/save.png" alt="Сохранить" />
+                </button>
+                <button id="withdrawButton" class="action-button" type="button">
+                    <img src="/images/withdraw.png" alt="Вывести" />
+                </button>
+                <button id="depositButton" class="action-button" type="button">
+                    <img src="/images/deposit.png" alt="Пополнить" />
+                </button>
+            </div>
+        </form>
+        <div id="myModal" class="modal">
+            <form id="modalForm" class="modal-content" action="" method="post">
+                <span class="close">&times;</span>
+                <h2 id="modalTitle">Введите сумму</h2>
+                <input type="hidden" name="name" th:value="${briefcase.getBriefcaseName()}">
+                <input type="number" id="amountInput" name="summ" placeholder="Сумма" required/>
+                <button id="executeButton">Выполнить</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let actionUrl = '';
+
+        var modal = document.getElementById("myModal");
+        var modalTitle = document.getElementById("modalTitle");
+        var amountInput = document.getElementById("amountInput");
+
+        // Получаем кнопки
+        var depositButton = document.getElementById("depositButton");
+        var withdrawButton = document.getElementById("withdrawButton");
+        var closeButton = document.getElementsByClassName("close")[0];
+        var modalForm = document.getElementById("modalForm");
+
+        // Открытие модального окна для ввода средств
+        depositButton.onclick = function() {
+            modalTitle.innerText = "Введите сумму для ввода";
+            modal.style.display = "block";
+            amountInput.value = "0"; // Сброс поля ввода
+            actionUrl = '/briefcases/deposit';
+            modalForm.setAttribute('action', actionUrl);
+        }
+
+        // Открытие модального окна для вывода средств
+        withdrawButton.onclick = function() {
+            modalTitle.innerText = "Введите сумму для вывода";
+            modal.style.display = "block";
+            amountInput.value = "0"; // Сброс поля ввода
+            actionUrl = '/briefcases/withdraw';
+            modalForm.setAttribute('action', actionUrl);
+        }
+
+        // Закрытие модального окна
+        closeButton.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Закрытие модального окна при клике вне его
+        window.onclick = function(event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        modalForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const amount = document.getElementById('amountInput').value;
+
+            if (amount && amount > 0) {
+                this.submit();
+            }else {
+                alert("Введите сумму");
+            }
+        });
+    </script>
+
+    <div class="portfolio-wrapper">
+        <h2>Операции:</h2>
+    </div>
+        <div class="operation-list" th:each="operation :${operations}">
+            <div class="operation-item">
+                <p><strong>Дата операции: </strong><span th:text="${operation.getCreatedAt()}">2023-10-01 12:00</span></p>
+                <p><strong>Тип операции: </strong><span th:text="${operation.getOperationName()}">Тип операции</span></p>
+                <p><strong>Статус операции: </strong><span th:text="${operation.getOperationStatus()}">Статус операции</span></p>
+                <p><strong>Акция: </strong><span th:text="${operation.getStock().getName()}">Акция</span></p>
+                <p><strong>Стоимость лота: </strong><span th:text="${operation.getPrice()}">Стоимость</span></p>
+                <p><strong>Количество лотов: </strong><span th:text="${operation.getStocksAmount()}">Количество</span></p>
+            </div>
+        </div>
+</div>
+
+
+</body>
+</html>
