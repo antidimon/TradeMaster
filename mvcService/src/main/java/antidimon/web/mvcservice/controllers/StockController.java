@@ -52,14 +52,13 @@ public class StockController {
     }
 
     @PostMapping("/search")
-    public String doSearch(@RequestParam(value = "query", required = false) String name, Model model) {
-        List<StockOutputDTO> stocks;
-        if (name == null || name.isEmpty()) {
-            stocks = restTemplateService.sendToGetStocks();
-        }
-        else {
-            stocks = restTemplateService.sendToGetStocks(name);
-        }
+    public String doSearch(@RequestParam(value = "query", required = false) String name,
+                    @RequestParam(value = "filter", required = false) String filter,
+                    @RequestParam(value = "from", required = false) Double from,
+                    @RequestParam(value = "to", required = false) Double to, Model model) {
+        if (from == null) from = (double) 0;
+        if (to == null) to = (double) 999999999;
+        List<StockOutputDTO> stocks = restTemplateService.sendToGetStocks(name, filter, from, to);
         model.addAttribute("stocks", stocks);
         return "search";
     }

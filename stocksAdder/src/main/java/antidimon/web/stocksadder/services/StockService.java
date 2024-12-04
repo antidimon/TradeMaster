@@ -21,9 +21,9 @@ public class StockService {
         stocks.add(stockA);
         StockInputDTO stockB = new StockInputDTO("B", 1763, 1);
         stocks.add(stockB);
-        StockInputDTO stockC = new StockInputDTO("C", 503.24, 1);
+        StockInputDTO stockC = new StockInputDTO("C", 0.00132, 1000000);
         stocks.add(stockC);
-        StockInputDTO stockD = new StockInputDTO("D", 0.00132, 1000000);
+        StockInputDTO stockD = new StockInputDTO("D", 503.24, 1);
         stocks.add(stockD);
     }
 
@@ -34,7 +34,7 @@ public class StockService {
 
     private void setRandomPrice(StockInputDTO stock) {
         int randomInt = rand.nextInt(100);
-        if (randomInt < 51) {
+        if (randomInt < 55) {
             stock.setPrice(stock.getPrice() + (int)stock.getPrice()*0.005);
         }
         else {

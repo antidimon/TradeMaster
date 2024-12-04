@@ -1,6 +1,7 @@
 package antidimon.web.restservice.controllers;
 
 
+import antidimon.web.restservice.models.dto.input.stock.StockFilterInputDTO;
 import antidimon.web.restservice.models.dto.input.stock.StockInputDTO;
 import antidimon.web.restservice.models.dto.output.stock.StockOutputDTO;
 import antidimon.web.restservice.services.StockService;
@@ -18,12 +19,6 @@ public class StockController {
 
     private final StockService stockService;
 
-    @GetMapping
-    public ResponseEntity<List<StockOutputDTO>> getStocks(){
-        List<StockOutputDTO> stocks = stockService.getStocks();
-        return ResponseEntity.ok(stocks);
-    }
-
     @PostMapping("/find")
     public ResponseEntity<StockOutputDTO> getStock(@RequestBody String name){
         try {
@@ -38,8 +33,9 @@ public class StockController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<StockOutputDTO>> findStocksByName(@RequestBody String name){
-        List<StockOutputDTO> stocks = stockService.getStocks(name);
+    public ResponseEntity<List<StockOutputDTO>> findStocksByName(@RequestBody StockFilterInputDTO stockFilterInputDTO,
+                                                                 @RequestParam(required = false, value = "filter") String filter){
+        List<StockOutputDTO> stocks = stockService.getStocks(stockFilterInputDTO, filter);
         return ResponseEntity.ok(stocks);
     }
 

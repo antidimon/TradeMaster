@@ -25,7 +25,7 @@ public class StocksAdderService {
     @Value(value = "${REST_URL}")
     private String REST_URL;
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "*/3 * * * * *")
     public void addStocks() {
         List<StockInputDTO> stocks = stockService.getStocks();
         HttpHeaders headers = new HttpHeaders();

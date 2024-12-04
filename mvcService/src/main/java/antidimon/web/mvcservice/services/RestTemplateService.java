@@ -6,6 +6,7 @@ import antidimon.web.mvcservice.models.inputDTO.briefcase.BriefcaseInputDTO;
 import antidimon.web.mvcservice.models.inputDTO.briefcase.BriefcaseEditDTO;
 import antidimon.web.mvcservice.models.inputDTO.briefcase.BriefcaseStockFindDTO;
 import antidimon.web.mvcservice.models.inputDTO.operation.OperationInputDTO;
+import antidimon.web.mvcservice.models.inputDTO.stock.StockFilterInputDTO;
 import antidimon.web.mvcservice.models.inputDTO.user.MyUserInputDTO;
 import antidimon.web.mvcservice.models.inputDTO.user.MyUserRegisterDTO;
 import antidimon.web.mvcservice.models.inputDTO.user.PhoneDTO;
@@ -79,13 +80,10 @@ public class RestTemplateService {
         }
     }
 
-    public List<StockOutputDTO> sendToGetStocks() {
-        return restTemplate.exchange(REST_URL + "/stocks", HttpMethod.GET, null, new ParameterizedTypeReference<List<StockOutputDTO>>(){}).getBody();
-    }
-
-    public List<StockOutputDTO> sendToGetStocks(String name) {
-        HttpEntity<String> request = new HttpEntity<>(name, headers);
-        return restTemplate.exchange(REST_URL + "/stocks/search", HttpMethod.POST, request, new ParameterizedTypeReference<List<StockOutputDTO>>(){}).getBody();
+    public List<StockOutputDTO> sendToGetStocks(String name, String filter, double from, double to) {
+        StockFilterInputDTO stockFilterInputDTO = new StockFilterInputDTO(name, from, to);
+        HttpEntity<StockFilterInputDTO> request = new HttpEntity<>(stockFilterInputDTO, headers);
+        return restTemplate.exchange(REST_URL + "/stocks/search?filter="+filter, HttpMethod.POST, request, new ParameterizedTypeReference<List<StockOutputDTO>>(){}).getBody();
     }
 
     public StockOutputDTO sendToGetStock(String name){

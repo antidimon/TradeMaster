@@ -15,11 +15,11 @@ import java.util.Map;
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
-    @Query(value = "SELECT DISTINCT ON (name) * FROM stocks ORDER BY name, getted_at DESC", nativeQuery = true)
-    List<Stock> findAllUnique();
+    @Query(value = "SELECT DISTINCT ON (name) * FROM stocks WHERE price BETWEEN :from AND :to ORDER BY name, getted_at DESC", nativeQuery = true)
+    List<Stock> findAllUnique(@Param("from") double from, @Param("to") double to);
 
-    @Query(value = "SELECT DISTINCT ON (name) * FROM stocks WHERE name LIKE :name ORDER BY name, getted_at DESC", nativeQuery = true)
-    List<Stock> findAllUniqueByName(@Param("name") String name);
+    @Query(value = "SELECT DISTINCT ON (name) * FROM stocks WHERE name LIKE :name AND price BETWEEN :from AND :to ORDER BY name, getted_at DESC", nativeQuery = true)
+    List<Stock> findAllUniqueByName(@Param("name") String name, @Param("from") double from, @Param("to") double to);
 
     @Query(value = "SELECT * FROM get_actual_stock(:name)", nativeQuery = true)
     Stock findLastByName(@Param("name") String name);

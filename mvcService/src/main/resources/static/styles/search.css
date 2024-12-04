@@ -87,7 +87,7 @@ h2 {
     margin-bottom: 20px;
 }
 
-.portfolio-input {
+.portfolio-input, .filter-select {
     padding: 10px;
     border: 2px solid #CD873C;
     border-radius: 50px;
@@ -97,6 +97,23 @@ h2 {
     width: 80%;
     max-width: 300px;
     text-align: center; /* Центрируем текст в поле ввода */
+}
+
+.price-range-input {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    max-width: 300px;
+    margin-top: 10px;
+}
+
+.price-range-input input {
+    padding: 10px;
+    border: 2px solid #CD873C;
+    border-radius: 50px;
+    font-size: 1em;
+    width: 45%;
+    text-align: center;
 }
 
 .portfolio-button {
@@ -113,6 +130,17 @@ h2 {
 
 .portfolio-button:hover {
     background-color: #1821ba;
+}
+
+.filter-select {
+    -webkit-appearance: none; /* Убираем стандартное оформление для WebKit */
+    -moz-appearance: none; /* Убираем стандартное оформление для Firefox */
+    appearance: none; /* Убираем стандартное оформление для других браузеров */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 5"><path fill="white" d="M2 5L0 3h4L2 5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px; /* Уменьшаем размер стрелки */
+    padding-right: 30px; /* Добавляем отступ для стрелки */
 }
 
 .results {

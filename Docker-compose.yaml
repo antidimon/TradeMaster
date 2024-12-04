@@ -81,6 +81,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${SCHEDULE_PORT}:${SCHEDULE_PORT}"
+    depends_on:
+      rest-service:
+        condition: service_started
 
 
 
