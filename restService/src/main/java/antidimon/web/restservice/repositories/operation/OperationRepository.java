@@ -1,6 +1,8 @@
 package antidimon.web.restservice.repositories.operation;
 
+import antidimon.web.restservice.models.dto.output.operation.OperationDetailsProjection;
 import antidimon.web.restservice.models.entities.operation.Operation;
+import antidimon.web.restservice.models.dto.output.operation.OperationDetails;
 import antidimon.web.restservice.models.entities.operation.OperationStatusEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Repository
 public interface OperationRepository extends JpaRepository<Operation, Long> {
@@ -29,4 +30,7 @@ public interface OperationRepository extends JpaRepository<Operation, Long> {
 
     @Query(value = "SELECT o FROM Operation o WHERE o.id=:id")
     Map<String, String> findOperationMap(@Param("id") long id);
+
+    @Query(value = "SELECT * FROM operation_details WHERE phone_number = :phoneNumber AND briefcase_name = :briefcase", nativeQuery = true)
+    List<OperationDetailsProjection> getOperationsFromView(@Param("phoneNumber") String phoneNumber, @Param("briefcase") String briefcaseName);
 }

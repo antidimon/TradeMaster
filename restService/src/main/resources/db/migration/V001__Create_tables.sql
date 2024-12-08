@@ -67,6 +67,7 @@ CREATE TABLE operations (
     stock_id bigint,
     stocks_amount int NOT NULL,
     stock_price numeric(15, 5),
+    stocks_per_lot int NOT NULL,
     created_at TIMESTAMP,
 
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,

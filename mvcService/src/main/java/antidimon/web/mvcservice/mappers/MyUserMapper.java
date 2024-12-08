@@ -16,10 +16,6 @@ public class MyUserMapper {
         return modelMapper.map(myUserRegisterDTO, MyUser.class);
     }
 
-    public MyUserInputDTO toInputDTO(MyUser myUser) {
-        return modelMapper.map(myUser, MyUserInputDTO.class);
-    }
-
     public MyUserInputDTO registerToInput(MyUserRegisterDTO myUserRegisterDTO) {
         return modelMapper.map(myUserRegisterDTO, MyUserInputDTO.class);
     }

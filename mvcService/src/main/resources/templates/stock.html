@@ -37,6 +37,9 @@
                 <h3>Цена сейчас: <span th:text="${stock.getPrice()}">500</span><span>₽</span></h3>
                 <h3>Прогнозная цена: <span th:text="${stock.getPredictedPrice()}">500</span><span>₽</span></h3>
             </div>
+            <div class="stock-actions">
+                <button id="downloadExcelButton" style="background-color: green; color: white; padding: 10px; border: none; cursor: pointer;">Выгрузить в Excel</button>
+            </div>
         </div>
 
         <script th:inline="javascript">
@@ -126,13 +129,18 @@
                         backgroundColor: 'white'
                     }
                 });
+
+                // Обработка нажатия на кнопку "Выгрузить в Excel"
+                document.getElementById('downloadExcelButton').addEventListener('click', function() {
+                    const stockName = /*[[${stock.getName()}]]*/;
+                    window.location.href = '/stocks/getExcel?name=' + encodeURIComponent(stockName);
+                });
             });
         </script>
-        <div class="stock-portfolio" th:each="briefcaseStock :${briefcaseStocks}">
-            <h3 th:text="${'В портфеле <' + briefcaseStock.getBriefcaseName() +'>:'}"></h3>
-            <p><strong>Количество: </strong><span th:text="${briefcaseStock.getStocksAmount()}">10</span></p>
-            <p><strong>Цена покупки: </strong><span th:text="${briefcaseStock.getStock().getPrice()}">450</span>₽</p>
-            <p><strong>Выручка: </strong><span th:text="${briefcaseStock.getRevenue()}">5000</span>₽</p>
+        <div class="stock-portfolio" th:each="briefcaseName :${groupedStocks.keySet()}">
+            <h3 th:text="${'В портфеле <' + briefcaseName +'>:'}"></h3>
+            <p><strong>Количество: </strong><span th:text="${groupedStocks.get(briefcaseName).get(0)}">10</span></p>
+            <p><strong>Выручка: </strong><span th:text="${groupedStocks.get(briefcaseName).get(1)}">5000</span>₽</p>
         </div>
         <div class="stock-actions">
             <form action="/stocks/buy" method="POST" class="buy-form">
@@ -147,6 +155,9 @@
                 <label for="numberBuy">Выберите количество:</label>
                 <input id="numberBuy" type="number" name="amount" placeholder="Количество" required>
                 <input type="hidden" name="stockName" th:value="${stock.getName()}" />
+                <input type="hidden" name="stocksPerLot" th:value="${stock.getStocksPerLot()}">
+                <span th:if="${buyAmountError}">Недостаточно средств для покупки</span>
+                <span th:if="${buyError}">Значение должно быть больше 0</span>
                 <button type="submit">Купить</button>
             </form>
             <script th:inline="javascript">
@@ -191,6 +202,9 @@
                 <label for="numberSell">Выберите количество:</label>
                 <input id="numberSell" type="number" name="amount" placeholder="Количество" required>
                 <input type="hidden" name="stockName" th:value="${stock.getName()}" />
+                <input type="hidden" name="stocksPerLot" th:value="${stock.getStocksPerLot()}">
+                <span th:if="${sellAmountError}">Невозможно продать данное количество акций</span>
+                <span th:if="${sellError}">Значение должно быть больше 0</span>
                 <button type="submit">Продать</button>
             </form>
             <script th:inline="javascript">

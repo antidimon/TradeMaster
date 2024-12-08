@@ -42,8 +42,8 @@
                 </form>
                 <div class="stock-details">
                     <p><strong>Акция </strong><span th:text="${stock.getName()}">A</span></p>
-                    <p><strong>Количество в 1 лоте: </strong><span th:text="${stock.getStocksPerLot()}">1</span></p>
-                    <p><strong>Цена: </strong><span th:text="${stock.getPrice()}">500</span><span>₽</span></p>
+                    <p><strong>Количество в 1 лоте: </strong><span th:text="${stock.getStocksPerLot() + ' шт'}">1</span></p>
+                    <p><strong>Цена за лот: </strong><span th:text="${stock.getPrice() * stock.getStocksPerLot()}">500</span><span>₽</span></p>
                 </div>
             </div>
         </div>

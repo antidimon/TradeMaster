@@ -19,8 +19,8 @@ public class StockController {
 
     private final StockService stockService;
 
-    @PostMapping("/find")
-    public ResponseEntity<StockOutputDTO> getStock(@RequestBody String name){
+    @GetMapping("/find")
+    public ResponseEntity<StockOutputDTO> getStock(@RequestParam("name") String name){
         try {
 
             StockOutputDTO stockOutputDTO = stockService.getStock(name);
@@ -41,7 +41,16 @@ public class StockController {
 
     @PostMapping("/add")
     public ResponseEntity<List<StockOutputDTO>> addStocks(@RequestBody List<StockInputDTO> stocks){
-        stocks.forEach(stockService::save);
+        stocks.forEach(stock -> {
+            System.out.println("Received Stock Price: " + stock.getPrice());
+            stockService.save(stock);
+        });
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<StockOutputDTO>> getStocks(@RequestParam("name") String stockName){
+        List<StockOutputDTO> stocks = stockService.getStocks(stockName);
+        return ResponseEntity.ok(stocks);
     }
 }

@@ -25,11 +25,24 @@ INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VAL
 INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('D', 536.87, NOW() - INTERVAL '2 minute', 521.8, 1);
 INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('D', 517.24, NOW() - INTERVAL '1 minute', 511.3, 1);
 
-INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('A', 100, CURRENT_TIMESTAMP, 110, 1);
-INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('B', 1763, CURRENT_TIMESTAMP, 1987, 1);
-INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('D', 503.24, CURRENT_TIMESTAMP, 500.91, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('A', 100, NOW(), 110, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('B', 1763, NOW(), 1987, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('D', 503.24, NOW(), 500.91, 1);
 INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('A', 101, NOW() + INTERVAL '1 minute', 112, 1);
-INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('C', 0.00132, CURRENT_TIMESTAMP, 0.00134, 1000000);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('C', 0.00132, NOW(), 0.00134, 1000000);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AR', 10000, NOW(), 112, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AC', 1000, NOW(), 112, 1);
+
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AR', 9820, NOW() - INTERVAL '5 minute', 9990, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AR', 9910, NOW() - INTERVAL '4 minute', 10000, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AR', 9960, NOW() - INTERVAL '3 minute', 10000, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AR', 10090, NOW() - INTERVAL '2 minute', 10100, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AR', 10030, NOW() - INTERVAL '1 minute', 10004, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AC', 1040, NOW() - INTERVAL '5 minute', 1040, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AC', 1050, NOW() - INTERVAL '4 minute', 1040, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AC', 1030, NOW() - INTERVAL '3 minute', 1030, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AC', 1015, NOW() - INTERVAL '2 minute', 1030, 1);
+INSERT INTO stocks (name, price, getted_at, predicted_price, stocks_per_lot) VALUES ('AC', 1020, NOW() - INTERVAL '1 minute', 1020, 1);
 
 INSERT INTO operation_names (name) VALUES ('PURCHASE');
 INSERT INTO operation_names (name) VALUES ('SALE');
@@ -55,15 +68,15 @@ INSERT INTO briefcase_stocks (briefcase_id, stock_id, stocks_amount, stock_actua
     VALUES (4, 19, 100, 0.00132, 0, True, 0, 0, 0, 0);
 
 
-INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, created_at)
-    VALUES (1, 1, 3, 2, 19, 100, 0.00134, CURRENT_TIMESTAMP);
-INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, created_at)
-    VALUES (1, 2, 3, 1, 15, 700, 100, CURRENT_TIMESTAMP);
-INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, created_at)
-    VALUES (2, 3, 4, 1, 16, 1000, 1763, CURRENT_TIMESTAMP);
-INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, created_at)
-    VALUES (2, 3, 1, 1, 18, 35, 101, CURRENT_TIMESTAMP);
-INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, created_at)
-    VALUES (3, 4, 2, 2, 19, 100, 0.00134, CURRENT_TIMESTAMP);
-INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, created_at)
-    VALUES (3, 4, 1, 1, 17, 100, 503.24, CURRENT_TIMESTAMP);
+INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, stocks_per_lot, created_at)
+    VALUES (1, 1, 3, 2, 19, 100, 0.00134, 1000000, NOW());
+INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, stocks_per_lot, created_at)
+    VALUES (1, 2, 3, 1, 15, 700, 100, 1, NOW());
+INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, stocks_per_lot, created_at)
+    VALUES (2, 3, 4, 1, 16, 1000, 1763, 1, NOW());
+INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, stocks_per_lot, created_at)
+    VALUES (2, 3, 1, 1, 18, 35, 101, 1, NOW());
+INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, stocks_per_lot, created_at)
+    VALUES (3, 4, 2, 2, 19, 100, 0.00134, 1, NOW());
+INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, stock_id, stocks_amount, stock_price, stocks_per_lot, created_at)
+    VALUES (3, 4, 1, 1, 17, 100, 503.24, 1, NOW());

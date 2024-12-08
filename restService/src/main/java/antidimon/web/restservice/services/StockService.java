@@ -12,8 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +31,7 @@ public class StockService {
             stocks = stockRepository.findAllUnique(stockFilterInputDTO.getFrom(), stockFilterInputDTO.getTo());
         }
         else {
-            stocks = stockRepository.findAllUniqueByName(stockFilterInputDTO.getName(), stockFilterInputDTO.getFrom(), stockFilterInputDTO.getTo());
+            stocks = stockRepository.findAllUniqueByName(stockFilterInputDTO.getName()+"%", stockFilterInputDTO.getFrom(), stockFilterInputDTO.getTo());
         }
         List<StockOutputDTO> stocksDTO = stocks.stream().map(stockMapper::toOutputDTO).toList();
         return doFilter(stocksDTO, filter);
@@ -42,6 +45,9 @@ public class StockService {
     @Transactional
     public void save(StockInputDTO stock) {
         Stock stockEntity = stockMapper.toEntity(stock);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat format = new DecimalFormat("#.##", symbols);
+        stockEntity.setPredictedPrice(Double.parseDouble(format.format(stockEntity.getPrice()*1.1)));
         stockRepository.save(stockEntity);
     }
 
@@ -65,5 +71,10 @@ public class StockService {
             default:
                 return stocksDTO;
         }
+    }
+
+    public List<StockOutputDTO> getStocks(String stockName) {
+        List<Stock> stocks = stockRepository.findAllByName(stockName);
+        return stocks.stream().map(stockMapper::toOutputDTO).toList();
     }
 }

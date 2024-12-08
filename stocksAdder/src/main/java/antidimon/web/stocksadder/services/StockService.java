@@ -4,10 +4,10 @@ package antidimon.web.stocksadder.services;
 import antidimon.web.stocksadder.models.StockInputDTO;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
+import java.util.*;
 
 @Service
 public class StockService {
@@ -25,6 +25,10 @@ public class StockService {
         stocks.add(stockC);
         StockInputDTO stockD = new StockInputDTO("D", 503.24, 1);
         stocks.add(stockD);
+        StockInputDTO stockAC = new StockInputDTO("AC", 1000, 1);
+        stocks.add(stockAC);
+        StockInputDTO stockAR = new StockInputDTO("AR", 10000, 1);
+        stocks.add(stockAR);
     }
 
     public List<StockInputDTO> getStocks() {
@@ -34,11 +38,15 @@ public class StockService {
 
     private void setRandomPrice(StockInputDTO stock) {
         int randomInt = rand.nextInt(100);
-        if (randomInt < 55) {
-            stock.setPrice(stock.getPrice() + (int)stock.getPrice()*0.005);
-        }
-        else {
-            stock.setPrice(stock.getPrice() - (int)stock.getPrice()*0.005);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat format = new DecimalFormat("#.##", symbols);
+        double newPrice = (randomInt < 55) ? stock.getPrice() + (int) stock.getPrice() * 0.005 : stock.getPrice() - (int) stock.getPrice() * 0.005;
+        try{
+            double formatedPrice = format.parse(format.format(newPrice)).doubleValue();
+            System.out.println(formatedPrice);
+            stock.setPrice(formatedPrice);
+        }catch (ParseException e){
+            e.printStackTrace();
         }
     }
 }

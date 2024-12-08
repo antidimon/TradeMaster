@@ -4,15 +4,14 @@ import antidimon.web.mvcservice.mappers.MyUserMapper;
 import antidimon.web.mvcservice.models.entities.OperationNames;
 import antidimon.web.mvcservice.models.inputDTO.briefcase.BriefcaseInputDTO;
 import antidimon.web.mvcservice.models.inputDTO.briefcase.BriefcaseEditDTO;
-import antidimon.web.mvcservice.models.inputDTO.briefcase.BriefcaseStockFindDTO;
 import antidimon.web.mvcservice.models.inputDTO.operation.OperationInputDTO;
 import antidimon.web.mvcservice.models.inputDTO.stock.StockFilterInputDTO;
 import antidimon.web.mvcservice.models.inputDTO.user.MyUserInputDTO;
 import antidimon.web.mvcservice.models.inputDTO.user.MyUserRegisterDTO;
-import antidimon.web.mvcservice.models.inputDTO.user.PhoneDTO;
 import antidimon.web.mvcservice.models.outputDTO.briefcase.BriefcaseInfoDTO;
 import antidimon.web.mvcservice.models.outputDTO.briefcase.BriefcaseOutputDTO;
 import antidimon.web.mvcservice.models.outputDTO.briefcase.BriefcaseStockOutputDTO;
+import antidimon.web.mvcservice.models.outputDTO.operation.OperationDetails;
 import antidimon.web.mvcservice.models.outputDTO.stock.StockOutputDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +20,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -47,16 +47,8 @@ public class RestTemplateService {
         return response.getStatusCode().is2xxSuccessful();
     }
 
-//    public MyUserOutputDTO sendToGetUser(PhoneDTO phoneDTO) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//        HttpEntity<PhoneDTO> request = new HttpEntity<>(phoneDTO, headers);
-//        return restTemplate.postForEntity(REST_URL + "/users", request, MyUserOutputDTO.class).getBody();
-//    }
-
-    public List<BriefcaseOutputDTO> sendToGetUserBriefcases(PhoneDTO phoneDTO) {
-        HttpEntity<PhoneDTO> request = new HttpEntity<>(phoneDTO, headers);
-        return restTemplate.exchange(REST_URL+"/briefcases/index", HttpMethod.POST, request, new ParameterizedTypeReference<List<BriefcaseOutputDTO>>(){}).getBody();
+    public List<BriefcaseOutputDTO> sendToGetUserBriefcases(String phoneNumber) {
+        return restTemplate.exchange(REST_URL+"/briefcases/index?phone="+phoneNumber, HttpMethod.GET, null, new ParameterizedTypeReference<List<BriefcaseOutputDTO>>(){}).getBody();
     }
 
     public BriefcaseInfoDTO sendToGetBriefcaseInfo(String phoneNumber, String name) {
@@ -87,13 +79,11 @@ public class RestTemplateService {
     }
 
     public StockOutputDTO sendToGetStock(String name){
-        HttpEntity<String> request = new HttpEntity<>(name, headers);
-        return restTemplate.postForEntity(REST_URL+"/stocks/find", request, StockOutputDTO.class).getBody();
+        return restTemplate.exchange(REST_URL+"/stocks/find?name=" +name, HttpMethod.GET, null, StockOutputDTO.class).getBody();
     }
 
     public List<BriefcaseStockOutputDTO> sendToGetUserStocks(String phoneNumber, String name) {
-        HttpEntity<BriefcaseStockFindDTO> request = new HttpEntity<>(new BriefcaseStockFindDTO(phoneNumber, name), headers);
-        return restTemplate.exchange(REST_URL + "/users/stocks", HttpMethod.POST, request, new ParameterizedTypeReference<List<BriefcaseStockOutputDTO>>(){}).getBody();
+        return restTemplate.exchange(REST_URL + "/users/stocks?phone=" + phoneNumber+ "&name="+name, HttpMethod.GET, null, new ParameterizedTypeReference<List<BriefcaseStockOutputDTO>>(){}).getBody();
     }
 
     public boolean sendToUpdateBalance(String phoneNumber, String briefcaseName, double amount) {
@@ -106,9 +96,9 @@ public class RestTemplateService {
         }
     }
 
-    public boolean sendToSellStocks(String phoneNumber, String briefcaseName, String stockName, int amount) {
+    public boolean sendToSellStocks(String phoneNumber, String briefcaseName, String stockName, int amount, int stocksPerLot) {
         HttpEntity<OperationInputDTO> request = new HttpEntity<>(new OperationInputDTO(phoneNumber, briefcaseName,
-                OperationNames.SALE, stockName, amount), headers);
+                OperationNames.SALE, stockName, amount, stocksPerLot), headers);
         try {
             ResponseEntity<OperationInputDTO> response = restTemplate.postForEntity(REST_URL+"/operations/sell", request, OperationInputDTO.class);
             return response.getStatusCode().is2xxSuccessful();
@@ -118,14 +108,40 @@ public class RestTemplateService {
 
     }
 
-    public boolean sendToBuyStocks(String phoneNumber, String briefcaseName, String stockName, int amount) {
+    public boolean sendToBuyStocks(String phoneNumber, String briefcaseName, String stockName, int amount, int stocksPerLot) {
         HttpEntity<OperationInputDTO> request = new HttpEntity<>(new OperationInputDTO(phoneNumber, briefcaseName,
-                OperationNames.PURCHASE, stockName, amount), headers);
+                OperationNames.PURCHASE, stockName, amount, stocksPerLot), headers);
         try {
             ResponseEntity<OperationInputDTO> response = restTemplate.postForEntity(REST_URL+"/operations/buy", request, OperationInputDTO.class);
             return response.getStatusCode().is2xxSuccessful();
         }catch (Exception e) {
             return false;
         }
+    }
+
+    public boolean sendToCreateNewBriefcase(String phoneNumber, String name) {
+        HttpEntity<BriefcaseInputDTO> request = new HttpEntity<>(new BriefcaseInputDTO(phoneNumber, name), headers);
+        try {
+            log.info("sent");
+            ResponseEntity<BriefcaseInputDTO> response = restTemplate.postForEntity(REST_URL+"/briefcases/new", request, BriefcaseInputDTO.class);
+            return response.getStatusCode().is2xxSuccessful();
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    public List<OperationDetails> sendToGetOperationsDetails(String phoneNumber, String name) {
+        HttpEntity<BriefcaseInputDTO> request = new HttpEntity<>(new BriefcaseInputDTO(phoneNumber, name));
+        try{
+            ResponseEntity<List<OperationDetails>> response = restTemplate.exchange(REST_URL + "/operations", HttpMethod.POST,
+                    request, new ParameterizedTypeReference<>() {});
+            return response.getBody();
+        }catch (Exception e){
+            return Collections.emptyList();
+        }
+    }
+
+    public List<StockOutputDTO> sendToGetStockData(String stockName) {
+        return restTemplate.exchange(REST_URL+"/stocks?name="+stockName, HttpMethod.GET, null, new ParameterizedTypeReference<List<StockOutputDTO>>() {}).getBody();
     }
 }

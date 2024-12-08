@@ -52,10 +52,13 @@ public class Operation implements Serializable {
     @Column(name = "stock_price")
     private double stockPrice;
 
+    @Column(name = "stocks_per_lot")
+    private int stocksPerLot;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public Operation(MyUser user, Briefcase operationBriefcase, OperationStatusEntity operationStatus, OperationNameEntity operationName, Stock operationStock, int stocksAmount, double stockPrice) {
+    public Operation(MyUser user, Briefcase operationBriefcase, OperationStatusEntity operationStatus, OperationNameEntity operationName, Stock operationStock, int stocksAmount, double stockPrice, int stocksPerLot) {
         this.user = user;
         this.operationBriefcase = operationBriefcase;
         this.operationStatus = operationStatus;
@@ -63,6 +66,7 @@ public class Operation implements Serializable {
         this.operationStock = operationStock;
         this.stocksAmount = stocksAmount;
         this.stockPrice = stockPrice;
+        this.stocksPerLot = stocksPerLot;
     }
 
     @Override

@@ -3,7 +3,6 @@ package antidimon.web.restservice.controllers;
 
 import antidimon.web.restservice.models.dto.input.briefcase.BriefcaseEditDTO;
 import antidimon.web.restservice.models.dto.input.briefcase.BriefcaseInputDTO;
-import antidimon.web.restservice.models.dto.input.user.PhoneDTO;
 import antidimon.web.restservice.models.dto.output.briefcases.BriefcaseInfoDTO;
 import antidimon.web.restservice.models.dto.output.briefcases.BriefcaseOutputDTO;
 import antidimon.web.restservice.services.BriefcaseService;
@@ -11,10 +10,7 @@ import antidimon.web.restservice.services.MyUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,10 +29,19 @@ public class BriefcaseController {
             BriefcaseOutputDTO briefcaseOutputDTO= briefcaseService.getBriefcase(briefcase);
             return ResponseEntity.ok(briefcaseOutputDTO);
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
+    }
 
+    @PostMapping("/new")
+    public ResponseEntity<BriefcaseInputDTO> createBriefcase(@RequestBody BriefcaseInputDTO briefcase){
+        try{
+            briefcaseService.createBriefcase(briefcase);
+            return ResponseEntity.ok(briefcase);
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(briefcase);
+        }
     }
 
     @PostMapping("/info")
@@ -46,15 +51,14 @@ public class BriefcaseController {
             BriefcaseInfoDTO briefcaseInfoDTO = briefcaseService.getBriefcaseInfo(briefcaseInputDTO);
             return ResponseEntity.ok(briefcaseInfoDTO);
         }catch (Exception e){
-            System.out.println(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }
-    @PostMapping("/index")
-    public ResponseEntity<List<BriefcaseOutputDTO>> getUserBriefcases(@RequestBody PhoneDTO phoneDTO) {
+    @GetMapping("/index")
+    public ResponseEntity<List<BriefcaseOutputDTO>> getUserBriefcases(@RequestParam("phone") String phoneNumber) {
 
         try{
-            List<BriefcaseOutputDTO> briefcases = myUserService.getUserBriefcases(phoneDTO.getPhoneNumber());
+            List<BriefcaseOutputDTO> briefcases = myUserService.getUserBriefcases(phoneNumber);
             return ResponseEntity.ok(briefcases);
         }catch (Exception e){
             System.out.println(e.getMessage());

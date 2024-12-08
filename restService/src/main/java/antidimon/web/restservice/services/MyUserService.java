@@ -63,6 +63,12 @@ public class MyUserService {
         return stocks.stream().map(briefcaseStockMapper::toOutputDTO).toList();
     }
 
+    public List<BriefcaseStockOutputDTO> findStocks(String phoneNumber) {
+
+        List<BriefcaseStock> stocks = myUserRepository.findStocks(phoneNumber);
+        return stocks.stream().map(briefcaseStockMapper::toOutputDTO).toList();
+    }
+
     @Transactional
     public void save(MyUserInputDTO user) {
         MyUser myUser = myUserMapper.toEntity(user);

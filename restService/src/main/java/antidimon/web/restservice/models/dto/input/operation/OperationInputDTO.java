@@ -18,6 +18,6 @@ public class OperationInputDTO {
     private OperationNames name;
     private String stockName;
     private int stocksAmount;
-
+    private int stocksPerLot;
 
 }

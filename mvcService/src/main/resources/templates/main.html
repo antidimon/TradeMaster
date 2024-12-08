@@ -27,6 +27,14 @@
         </form>
     </div>
     <div class="portfolio-wrapper">
+        <button id="create-portfolio-button" class="portfolio-button">Создать портфель</button>
+        <div class="popup" id="popup">
+            <form id="create-portfolio-form" action="/briefcases/new" method="POST">
+                <input type="text" id="portfolio-name" name="name" placeholder="Название портфеля" required>
+                <button type="submit">Создать</button>
+            </form>
+        </div>
+        <div class="popup-overlay" id="popup-overlay"></div>
         <div class="portfolio" th:each="briefcase: ${briefcases}">
             <form action="/briefcases" method="get">
                 <input type="hidden" name="name" th:value="${briefcase.getBriefcaseName()}">
@@ -47,20 +55,21 @@
                     </div>
                 </div>
             </div>
-            <div class="stock-item" th:each="stock: ${briefcase.getStocks()}">
-                <form action="/stocks" method="GET" class="stock-icon-form">
-                    <input type="hidden" name="name" th:value="${stock.getStock().getName()}" />
-                    <button type="submit" class="stock-icon-button">
-                        <img th:src="${stock.getStock().getUrl()}" alt="Stock Icon" class="stock-image" />
-                    </button>
-                </form>
+            <div th:if="${groupedStocks.containsKey(briefcase.getBriefcaseName())}">
+                <div class="stock-item" th:each="stockName : ${groupedStocks.get(briefcase.getBriefcaseName()).keySet()}">
+                    <form action="/stocks" method="GET" class="stock-icon-form">
+                        <input type="hidden" name="name" th:value="${stockName}" />
+                        <button type="submit" class="stock-icon-button">
+                            <img th:src="${stocksUrls.get(stockName)}" alt="Stock Icon" class="stock-image" />
+                        </button>
+                    </form>
 
-
-                <div class="stock-details">
-                    <p><strong>Акция </strong><span th:text="${stock.getStock().getName()}">A</span></p>
-                    <p><strong>Цена: </strong><span th:text="${stock.getStockActualPrice()}">500</span><span>₽</span></p>
-                    <p><strong>Количество: </strong><span th:text="${stock.getStocksAmount()}">10</span></p>
-                    <p><strong>Выручка: </strong><span th:text="${stock.getRevenue()}">5000</span><span>₽</span></p>
+                    <div class="stock-details">
+                        <p><strong>Акция </strong><span th:text="${stockName}">A</span></p>
+                        <p><strong>Цена: </strong><span th:text="${stocks.get(stockName).getStockActualPrice()}">500</span><span>₽</span></p>
+                        <p><strong>Количество: </strong><span th:text="${groupedStocks.get(briefcase.getBriefcaseName()).get(stockName).get(0)}">10</span></p>
+                        <p><strong>Выручка: </strong><span th:text="${groupedStocks.get(briefcase.getBriefcaseName()).get(stockName).get(1)}">5000</span><span>₽</span></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -99,5 +108,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('create-portfolio-button').addEventListener('click', function() {
+        document.getElementById('popup').style.display = 'block';
+        document.getElementById('popup-overlay').style.display = 'block';
+    });
+
+    document.getElementById('popup-overlay').addEventListener('click', function() {
+        document.getElementById('popup').style.display = 'none';
+        document.getElementById('popup-overlay').style.display = 'none';
+    });
+
+    document.getElementById('create-portfolio-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const portfolioName = document.getElementById('portfolio-name').value;
+
+        if (portfolioName) {
+            this.submit();
+        }else {
+            alert("Введите название");
+        }
+    });
+</script>
 </body>
 </html>
+

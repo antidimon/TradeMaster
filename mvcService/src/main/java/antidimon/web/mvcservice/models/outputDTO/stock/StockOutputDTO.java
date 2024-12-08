@@ -11,7 +11,6 @@ import java.util.List;
 @Setter
 @ToString
 public class StockOutputDTO {
-
     private String name;
     private double price;
     private LocalDateTime gettedAt;

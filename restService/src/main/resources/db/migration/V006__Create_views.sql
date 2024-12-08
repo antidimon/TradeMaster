@@ -3,16 +3,21 @@ SELECT id, fio, age FROM users;
 
 
 
-CREATE OR REPLACE VIEW v_operations AS
+CREATE VIEW operation_details AS
 SELECT
-    o.id,
-    u.fio AS user_name,
-    b.briefcase_name,
-    os.status,
-    onm.name AS operation_name,
-    o.stocks_amount,
-    o.stock_price,
-    o.created_at
+    o.id AS operation_id,
+    u.fio AS fio,
+    u.passport_details AS passport_details,
+    u.phone_number AS phone_number,
+    b.briefcase_name AS briefcase_name,
+    os.status AS operation_status,
+    oname.name AS operation_name,
+    s.name AS stock_name,
+    o.stocks_amount AS stocks_amount,
+    o.stock_price AS stock_price,
+    o.stocks_per_lot AS stocks_per_lot,
+    o.created_at AS operation_time,
+    (o.stocks_amount * o.stock_price) AS total_amount
 FROM
     operations o
 JOIN
@@ -22,7 +27,9 @@ JOIN
 JOIN
     operation_statuses os ON o.status_id = os.id
 JOIN
-    operation_names onm ON o.operation_name_id = onm.id;
+    operation_names oname ON o.operation_name_id = oname.id
+JOIN
+    stocks s ON o.stock_id = s.id;
 
 
 

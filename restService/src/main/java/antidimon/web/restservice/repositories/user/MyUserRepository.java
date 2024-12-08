@@ -21,4 +21,11 @@ public interface MyUserRepository extends JpaRepository<MyUser, Long> {
             "INNER JOIN b.owner u " +
             "WHERE u.phoneNumber = :phoneNumber AND s.name = :name")
     List<BriefcaseStock> findStocks(@Param("phoneNumber") String phoneNumber, @Param("name") String name);
+
+    @Query(value = "SELECT bs FROM BriefcaseStock bs  " +
+            "INNER JOIN bs.stock s " +
+            "INNER JOIN bs.briefcase b " +
+            "INNER JOIN b.owner u " +
+            "WHERE u.phoneNumber = :phoneNumber")
+    List<BriefcaseStock> findStocks(@Param("phoneNumber") String phoneNumber);
 }

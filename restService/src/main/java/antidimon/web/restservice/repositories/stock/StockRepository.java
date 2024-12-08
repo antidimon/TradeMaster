@@ -26,4 +26,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     @Query(value = "SELECT price, getted_at FROM stocks WHERE name = :name ORDER BY getted_at", nativeQuery = true)
     List<Tuple> getPrices(@Param("name") String name);
+
+    @Query(value = "SELECT * FROM stocks WHERE name = :name ORDER BY id", nativeQuery = true)
+    List<Stock> findAllByName(@Param("name") String stockName);
 }

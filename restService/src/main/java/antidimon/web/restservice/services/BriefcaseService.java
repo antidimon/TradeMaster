@@ -80,4 +80,9 @@ public class BriefcaseService {
     public Briefcase getBriefcase(long id, String briefcaseName) {
         return briefcaseRepository.findByUserAndName(id, briefcaseName).get();
     }
+
+    public void createBriefcase(BriefcaseInputDTO briefcase) {
+        MyUser user = myUserService.getUserEntity(briefcase.getPhoneNumber());
+        briefcaseRepository.save(briefcaseMapper.toEntity(briefcase, user));
+    }
 }
