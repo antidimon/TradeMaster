@@ -31,6 +31,7 @@
 * Flyway
 * Docker
 * HTML+CSS+JS
+* Mockito
 
 ## Запуск
 
