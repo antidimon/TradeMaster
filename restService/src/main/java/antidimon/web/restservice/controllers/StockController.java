@@ -41,10 +41,7 @@ public class StockController {
 
     @PostMapping("/add")
     public ResponseEntity<List<StockOutputDTO>> addStocks(@RequestBody List<StockInputDTO> stocks){
-        stocks.forEach(stock -> {
-            System.out.println("Received Stock Price: " + stock.getPrice());
-            stockService.save(stock);
-        });
+        stocks.forEach(stockService::save);
         return ResponseEntity.ok().build();
     }
 
