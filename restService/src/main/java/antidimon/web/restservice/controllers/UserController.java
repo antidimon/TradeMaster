@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserController {
 
-    private final MyUserService myUserService;
+    private MyUserService myUserService;
 
     @GetMapping("/stocks")
     public ResponseEntity<List<BriefcaseStockOutputDTO>> getUserStocks(@RequestParam("phone") String phoneNumber, @RequestParam(required = false, value = "name") String name){

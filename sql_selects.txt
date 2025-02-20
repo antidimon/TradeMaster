@@ -2,236 +2,97 @@ INSERT INTO operations (user_id, briefcase_id, status_id, operation_name_id, sto
     VALUES (1, 1, 1, 1, 'A', 10, 101);
 
 
-
------------Row_Number
+------------Row_number()
 SELECT
     id,
-    user_id,
-    briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
-    stock_price,
-    created_at,
-    ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY created_at) AS row_num
+    name,
+    ROW_NUMBER() OVER (ORDER BY name) AS row_num
 FROM
-    operations;
-
-
-----------Rank
+    operation_names;
+---------Rank()
 SELECT
     id,
-    user_id,
-    briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
-    stock_price,
-    created_at,
-    RANK() OVER (PARTITION BY user_id ORDER BY stock_price DESC) AS rank
+    fio,
+    age,
+    RANK() OVER (ORDER BY age DESC) AS age_rank
 FROM
-    operations;
-
-
-----------Dense Rank
+    users;
+-------------Dense_rank()
 SELECT
     id,
-    user_id,
-    briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
-    stock_price,
-    created_at,
-    DENSE_RANK() OVER (PARTITION BY user_id ORDER BY stock_price DESC) AS dense_rank
+    name,
+    DENSE_RANK() OVER (ORDER BY name) AS dense_rank
 FROM
-    operations;
-
-
------------Ntile
+    operation_names;
+--------lag
 SELECT
     id,
-    user_id,
-    briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
     stock_price,
-    created_at,
-    NTILE(4) OVER (PARTITION BY user_id ORDER BY created_at) AS ntile
+    LAG(stock_price, 1) OVER (ORDER BY created_at) AS prev_stock_price
 FROM
     operations;
-
-
---------LAG
+----------lead
 SELECT
     id,
-    user_id,
-    briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
     stock_price,
-    created_at,
-    LAG(stock_price, 1, 0) OVER (PARTITION BY user_id ORDER BY created_at) AS prev_stock_price
+    LEAD(stock_price, 1) OVER (ORDER BY created_at) AS next_stock_price
 FROM
     operations;
-
-
-
-
-
---------LEAD
+--------------ntile
 SELECT
     id,
-    user_id,
-    briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
-    stock_price,
-    created_at,
-    LEAD(stock_price, 1, 0) OVER (PARTITION BY user_id ORDER BY created_at) AS next_stock_price
+    fio,
+    NTILE(4) OVER (ORDER BY age) AS quartile
 FROM
-    operations;
-
-
-
---------CUME DUST
+    users;
+----------first value
 SELECT
-    id,
     user_id,
-    briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
-    stock_price,
-    created_at,
-    CUME_DIST() OVER (PARTITION BY user_id ORDER BY stock_price) AS cume_dist
+    fio,
+    FIRST_VALUE(fio) OVER (PARTITION BY age ORDER BY fio) AS first_fio
 FROM
-    operations;
-
-
-
----------First value
+    users;
+---------------last_value
 SELECT
-    id,
     user_id,
-    briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
-    stock_price,
-    created_at,
-    FIRST_VALUE(stock_price) OVER (PARTITION BY user_id ORDER BY created_at) AS first_stock_price
+    fio,
+    LAST_VALUE(fio) OVER (PARTITION BY age ORDER BY fio RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_fio
 FROM
-    operations;
-
-
-
-
-
---------Last value
+    users;
+-------------Sum
 SELECT
-    id,
-    user_id,
     briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
-    stock_price,
-    created_at,
-    LAST_VALUE(stock_price) OVER (PARTITION BY user_id ORDER BY created_at RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS last_stock_price
+    SUM(stocks_amount) OVER (PARTITION BY briefcase_id) AS total_stocks
 FROM
-    operations;
-
-
-
-
-
-
--------AVG
+    briefcase_stocks;
+---------avg
 SELECT
-    id,
-    user_id,
-    briefcase_id,
-    status_id,
-    operation_name_id,
     stock_id,
-    stocks_amount,
-    stock_price,
-    created_at,
-    AVG(stock_price) OVER (PARTITION BY user_id) AS avg_stock_price
+    AVG(stock_price) OVER (PARTITION BY stock_id) AS avg_price
 FROM
     operations;
-
-
-
-
-------Min
+-------------count
 SELECT
-    id,
     user_id,
-    briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
-    stock_price,
-    created_at,
-    MIN(stock_price) OVER (PARTITION BY user_id) AS min_stock_price
+    COUNT(*) OVER (PARTITION BY user_id) AS operation_count
 FROM
     operations;
-
-
-
-
-------Max
+-----min
 SELECT
-    id,
-    user_id,
     briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
-    stock_price,
-    created_at,
-    MAX(stock_price) OVER (PARTITION BY user_id) AS max_stock_price
+    briefcase_name,
+    deposited_balance,
+    MIN(deposited_balance) OVER (PARTITION BY user_id) AS min_deposited_balance
 FROM
-    operations;
-
-
-
-
----------Sum
+    briefcases;
+--------max
 SELECT
-    id,
-    user_id,
     briefcase_id,
-    status_id,
-    operation_name_id,
-    stock_id,
-    stocks_amount,
-    stock_price,
-    created_at,
-    SUM(stocks_amount) OVER (PARTITION BY user_id) AS total_stocks_amount
+    briefcase_name,
+    balance_now,
+    MAX(balance_now) OVER (PARTITION BY user_id) AS max_balance_now
 FROM
-    operations;
-
-
-
-
-
+    briefcases;
 
 
 

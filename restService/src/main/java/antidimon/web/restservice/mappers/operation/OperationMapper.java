@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 public class OperationMapper {
 
     private final ModelMapper modelMapper = new ModelMapper();
-    private final OperationStatusMapper operationStatusMapper;
-    private final OperationNameMapper operationNameMapper;
-    private final StockMapper stockMapper;
+    private OperationStatusMapper operationStatusMapper;
+    private OperationNameMapper operationNameMapper;
+    private StockMapper stockMapper;
 
     public OperationOutputDTO toOutputDTO(Operation operation) {
         OperationOutputDTO operationOutputDTO = modelMapper.map(operation, OperationOutputDTO.class);

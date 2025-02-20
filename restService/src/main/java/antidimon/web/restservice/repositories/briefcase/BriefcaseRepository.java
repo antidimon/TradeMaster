@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -29,4 +30,7 @@ public interface BriefcaseRepository extends JpaRepository<Briefcase, Long> {
     @Modifying
     @Query(value = "UPDATE briefcases SET deposited_balance = deposited_balance + :amount WHERE id = :briefcase_id", nativeQuery = true)
     void addDeposit(@Param("briefcase_id") long briefcaseId, @Param("amount") double balance);
+
+    @Query(value = "SELECT briefcase_id, SUM(stocks_amount) OVER (PARTITION BY briefcase_id) AS total_stocks FROM briefcase_stocks", nativeQuery = true)
+    List<Object[]> getBriefcasesLotsAmount();
 }

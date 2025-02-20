@@ -144,4 +144,8 @@ public class RestTemplateService {
     public List<StockOutputDTO> sendToGetStockData(String stockName) {
         return restTemplate.exchange(REST_URL+"/stocks?name="+stockName, HttpMethod.GET, null, new ParameterizedTypeReference<List<StockOutputDTO>>() {}).getBody();
     }
+
+    public int getBriefcaseLotsAmount(String phoneNumber, String name) {
+        return restTemplate.exchange(REST_URL+"/briefcases/lots?phone="+phoneNumber+"&name="+name, HttpMethod.GET, null, new ParameterizedTypeReference<Integer>() {}).getBody();
+    }
 }

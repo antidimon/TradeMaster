@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -84,5 +85,19 @@ public class BriefcaseService {
     public void createBriefcase(BriefcaseInputDTO briefcase) {
         MyUser user = myUserService.getUserEntity(briefcase.getPhoneNumber());
         briefcaseRepository.save(briefcaseMapper.toEntity(briefcase, user));
+    }
+
+    public long getBriefcaseLotsAmount(String phoneNumber, String briefcaseName){
+        MyUser user = myUserService.getUserEntity(phoneNumber);
+        List<Object[]> list = briefcaseRepository.getBriefcasesLotsAmount();
+        long briefcase_id = getBriefcase(user.getId(), briefcaseName).getId();
+        long ans = 0;
+        for (Object[] res: list){
+            if ((long)res[0] == briefcase_id){
+                ans = (long)res[1];
+                break;
+            }
+        }
+        return ans;
     }
 }

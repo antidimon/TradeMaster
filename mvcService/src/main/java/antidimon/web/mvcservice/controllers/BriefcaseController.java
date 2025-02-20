@@ -39,8 +39,10 @@ public class BriefcaseController {
         BriefcaseOutputDTO briefcase = restTemplateService.sendToGetBriefcase(phoneNumber, name);
         BriefcaseInfoDTO briefcaseInfo = restTemplateService.sendToGetBriefcaseInfo(phoneNumber, name);
         List<OperationOutputDTO> operations = briefcaseInfo.getOperations().stream().sorted(Comparator.comparing(OperationOutputDTO::getCreatedAt).reversed()).toList();
+        int briefcaseLotsAmount = restTemplateService.getBriefcaseLotsAmount(phoneNumber, name);
         model.addAttribute("briefcase", briefcase);
         model.addAttribute("operations", operations);
+        model.addAttribute("briefcaseLotsAmount", briefcaseLotsAmount);
 
         return "briefcase";
     }

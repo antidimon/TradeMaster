@@ -27,6 +27,7 @@
             <div class="briefcase-info">
                 <p><strong>Общий баланс: </strong><span th:text="${briefcase.getBalanceNow()}">1</span><span>₽</span></p>
                 <p><strong>Баланс в рублях: </strong><span th:text="${briefcase.getFreeBalance()}">1</span><span>₽</span></p>
+                <p><strong>Всего лотов в портфеле:</strong><span th:text="${briefcaseLotsAmount}">1</span></p>
             </div>
             <div class="action-buttons">
                 <button class="action-button save-button" type="submit">
@@ -125,8 +126,6 @@
             <p><strong>Итоговая сумма: </strong><span th:text="${operation.getStocksAmount()*operation.getPrice()}">Общая цена</span></p>
         </div>
     </div>
-
-
 </div>
 </body>
 </html>

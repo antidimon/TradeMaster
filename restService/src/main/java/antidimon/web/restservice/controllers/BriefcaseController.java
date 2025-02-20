@@ -96,4 +96,10 @@ public class BriefcaseController {
             return ResponseEntity.badRequest().body(briefcaseEditDTO);
         }
     }
+
+    @GetMapping("/lots")
+    public ResponseEntity<Long> getBriefcaseLotsAmount(@RequestParam("phone") String phoneNumber, @RequestParam("name") String briefcaseName){
+        Long ans = briefcaseService.getBriefcaseLotsAmount(phoneNumber, briefcaseName);
+        return ResponseEntity.ok(ans);
+    }
 }

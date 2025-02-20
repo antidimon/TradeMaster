@@ -13,22 +13,24 @@ import antidimon.web.restservice.models.entities.briefcase.Briefcase;
 import antidimon.web.restservice.models.entities.briefcase.BriefcaseStock;
 import antidimon.web.restservice.models.entities.user.MyUser;
 import antidimon.web.restservice.repositories.user.MyUserRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class MyUserService {
 
-    private final BriefcaseMapper briefcaseMapper;
-    private final MyUserRepository myUserRepository;
-    private final MyUserMapper myUserMapper;
-    private final BriefcaseStockMapper briefcaseStockMapper;
+    private BriefcaseMapper briefcaseMapper;
+    private MyUserRepository myUserRepository;
+    private MyUserMapper myUserMapper;
+    private BriefcaseStockMapper briefcaseStockMapper;
 
 
     public MyUser getUserEntity(String phoneNumber){
