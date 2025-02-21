@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 public class BriefcaseController {
 
-    private final BriefcaseService briefcaseService;
+    private BriefcaseService briefcaseService;
     private MyUserService myUserService;
 
     @PostMapping
